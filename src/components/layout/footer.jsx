@@ -105,7 +105,7 @@ const Footer = () => {
 
           {/* Bloc 3 */}
           <div>
-            <h2 className="text-xl font-bold mb-4 text-white">EASYTRAVEL</h2>
+            <h2 className="text-xl font-bold mb-4 text-white">STYLESHOP</h2>
 
             <ul className="space-y-3 text-sm">
               <li>
@@ -128,13 +128,13 @@ const Footer = () => {
 
               <li>
                 <a href="#" className="text-white/80 hover:text-pink-300 transition">
-                  Financements
+                  Les plus moins chers
                 </a>
               </li>
 
               <li>
                 <a href="#" className="text-white/80 hover:text-pink-300 transition">
-                  Frais de scolarité
+                  Nouveaux articles
                 </a>
               </li>
             </ul>
