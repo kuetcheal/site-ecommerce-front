@@ -1,22 +1,51 @@
 import Slide from "../components/carousel/slide.jsx";
 import AllCategories from "../components/carousel/allCategories.jsx";
 import Description from "../components/carousel/description.jsx";
+import ProductCarousel from "../components/products/ProductCarousel.jsx";
+import TestimonialsCarousel from "../components/carousel/TestimonialsCarousel.jsx";
+import { newCollections, popularProducts, accessoriesProducts } from "../data/productsData.js";
 
 const Home = () => {
-  return (
+    const handleFavorite = (product) => {
+    // Plus tard ici : dispatch(addToFavorites(product)) avec Redux.
+    console.log("Favori :", product);
+  };
+   return (
     <>
       <Slide />
-      <AllCategories />
-       <Description />
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Nos produits populaires
-        </h2>
 
-        <p className="mt-2 text-gray-600">
-          Découvrez bientôt notre sélection de vêtements, chaussures, montres et accessoires.
-        </p>
-      </section>
+      <AllCategories />
+
+      <Description />
+
+      <ProductCarousel
+        title="Nouvelles collections"
+        subtitle="Découvrez les dernières pièces ajoutées à notre boutique."
+        products={newCollections}
+        viewAllLink="/nouveautes"
+        carouselId="new-collections"
+        onFavorite={handleFavorite}
+      />
+
+      <ProductCarousel
+        title="Produits populaires"
+        subtitle="Les articles les plus appréciés par nos clients."
+        products={popularProducts}
+        viewAllLink="/produits-populaires"
+        carouselId="popular-products"
+        onFavorite={handleFavorite}
+      />
+
+      <TestimonialsCarousel />
+
+      <ProductCarousel
+        title="Accessoires"
+        subtitle="Montres, bijoux, lunettes, sacs et accessoires pour compléter votre style."
+        products={accessoriesProducts}
+        viewAllLink="/accessoires"
+        carouselId="accessories-products"
+        onFavorite={handleFavorite}
+      />
     </>
   );
 };
