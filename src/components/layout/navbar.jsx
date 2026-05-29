@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useCart } from "../../context/CartContext.jsx";
 import {
   FiMenu,
   FiX,
@@ -14,6 +15,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
 
+  const { cartCount } = useCart();
+
   const navClass = ({ isActive }) =>
     isActive
       ? "text-pink-500 font-semibold"
@@ -22,7 +25,6 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top navbar */}
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
@@ -46,13 +48,20 @@ const Navbar = () => {
               Accueil
             </NavLink>
 
+            <NavLink to="/produits" className={navClass}>
+              Produits
+            </NavLink>
+
             <NavLink to="/nouveautes" className={navClass}>
               Nouveautés
             </NavLink>
 
             {/* Dropdown catégories */}
             <div className="relative group">
-              <button className="flex items-center gap-1 text-gray-700 hover:text-pink-500 transition">
+              <button
+                type="button"
+                className="flex items-center gap-1 text-gray-700 hover:text-pink-500 transition"
+              >
                 Catégories
                 <FiChevronDown className="text-sm mt-1" />
               </button>
@@ -114,24 +123,19 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Actions */}
+          {/* Actions desktop */}
           <div className="hidden md:flex items-center gap-4">
-            {/* <Link
-              to="/favoris"
-              className="relative w-10 h-10 rounded-full bg-gray-100 hover:bg-pink-50 flex items-center justify-center text-gray-700 hover:text-pink-500 transition"
-            >
-              <FiHeart className="text-xl" />
-            </Link> */}
-
             <Link
               to="/panier"
               className="relative w-10 h-10 rounded-full bg-gray-100 hover:bg-pink-50 flex items-center justify-center text-gray-700 hover:text-pink-500 transition"
             >
               <FiShoppingBag className="text-xl" />
 
-              <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                0
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             <Link
@@ -139,7 +143,7 @@ const Navbar = () => {
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 text-white text-sm font-semibold hover:bg-pink-500 transition"
             >
               <FiUser />
-              Compte
+              Connexion
             </Link>
           </div>
 
@@ -149,13 +153,17 @@ const Navbar = () => {
             className="lg:hidden w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center text-gray-800"
             aria-label="Ouvrir le menu"
           >
-            {isOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
+            {isOpen ? (
+              <FiX className="text-2xl" />
+            ) : (
+              <FiMenu className="text-2xl" />
+            )}
           </button>
         </div>
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="lg:hidden pb-6 animate-[fadeIn_0.2s_ease-in-out]">
+          <div className="lg:hidden pb-6">
             {/* Search mobile */}
             <div className="flex items-center bg-gray-100 rounded-2xl px-4 py-3 mb-5">
               <FiSearch className="text-gray-400 mr-2" />
@@ -176,6 +184,14 @@ const Navbar = () => {
               </NavLink>
 
               <NavLink
+                to="/produits"
+                onClick={() => setIsOpen(false)}
+                className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
+              >
+                Produits
+              </NavLink>
+
+              <NavLink
                 to="/nouveautes"
                 onClick={() => setIsOpen(false)}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
@@ -184,14 +200,14 @@ const Navbar = () => {
               </NavLink>
 
               <button
+                type="button"
                 onClick={() => setCategoriesOpen(!categoriesOpen)}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500 flex items-center justify-between"
               >
                 Catégories
                 <FiChevronDown
-                  className={`transition ${
-                    categoriesOpen ? "rotate-180" : ""
-                  }`}
+                  className={`transition ${categoriesOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -253,6 +269,14 @@ const Navbar = () => {
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Contact
+              </NavLink>
+
+              <NavLink
+                to="/connexion"
+                onClick={() => setIsOpen(false)}
+                className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
+              >
+                Connexion
               </NavLink>
             </div>
 

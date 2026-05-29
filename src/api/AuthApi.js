@@ -24,4 +24,9 @@ export const AuthApi = {
   logout: () => {
     removeToken();
   },
+
+  // Endpoint à créer plus tard côté Spring Boot
+  forgotPassword: async (email) => {
+    return http.post("/auth/forgot-password", { email });
+  },
 };

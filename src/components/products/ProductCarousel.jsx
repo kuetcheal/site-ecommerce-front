@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { FiHeart, FiShoppingBag, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useCart } from "../../context/CartContext.jsx";
+import {
+  FiHeart,
+  FiShoppingBag,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -21,13 +27,14 @@ const ProductCarousel = ({
   carouselId = "products",
   onFavorite,
 }) => {
+  const { addToCart } = useCart();
+
   const handleFavorite = (product) => {
     if (onFavorite) {
       onFavorite(product);
       return;
     }
 
-    // Plus tard, on remplacera ça par Redux.
     console.log("Produit ajouté aux favoris :", product);
   };
 
@@ -37,18 +44,12 @@ const ProductCarousel = ({
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
           <div>
-            {/* <p className="text-sm font-semibold text-pink-500 uppercase tracking-[0.2em]">
-              StyleShop
-            </p> */}
-
             <h2 className="mt-2 text-2xl md:text-3xl font-extrabold text-gray-900">
               {title}
             </h2>
 
             {subtitle && (
-              <p className="mt-2 text-gray-500 max-w-2xl">
-                {subtitle}
-              </p>
+              <p className="mt-2 text-gray-500 max-w-2xl">{subtitle}</p>
             )}
           </div>
 
@@ -128,11 +129,13 @@ const ProductCarousel = ({
                       <FiHeart className="text-xl" />
                     </button>
 
-                    {/* Bouton rapide */}
+                    {/* Bouton panier */}
                     <div className="absolute left-4 right-4 bottom-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition duration-300">
                       <button
                         type="button"
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-gray-900 text-white font-semibold hover:bg-pink-500 transition"
+                        onClick={() => addToCart(product, 1)}
+                        disabled={product.stock <= 0}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-gray-900 text-white font-semibold hover:bg-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
                       >
                         <FiShoppingBag />
                         Ajouter au panier
