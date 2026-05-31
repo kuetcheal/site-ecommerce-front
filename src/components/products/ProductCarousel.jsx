@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useCart } from "../../context/CartContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../../store/favoritesSlice.js";
 import {
   FiHeart,
   FiShoppingBag,
@@ -25,17 +27,19 @@ const ProductCarousel = ({
   products = [],
   viewAllLink = "/produits",
   carouselId = "products",
-  onFavorite,
 }) => {
   const { addToCart } = useCart();
 
-  const handleFavorite = (product) => {
-    if (onFavorite) {
-      onFavorite(product);
-      return;
-    }
+  const dispatch = useDispatch();
 
-    console.log("Produit ajouté aux favoris :", product);
+  const favorites = useSelector((state) => state.favorites.items);
+
+  const isFavorite = (productId) => {
+    return favorites.some((item) => item.id === productId);
+  };
+
+  const handleFavorite = (product) => {
+    dispatch(toggleFavorite(product));
   };
 
   return (
@@ -119,11 +123,15 @@ const ProductCarousel = ({
                       )}
                     </div>
 
-                    {/* Bouton favoris */}
+                    {/* Bouton favoris avec Redux */}
                     <button
                       type="button"
                       onClick={() => handleFavorite(product)}
-                      className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 hover:bg-pink-500 hover:text-white flex items-center justify-center text-gray-800 shadow transition"
+                      className={`absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center shadow transition ${
+                        isFavorite(product.id)
+                          ? "bg-pink-500 text-white"
+                          : "bg-white/90 text-gray-800 hover:bg-pink-500 hover:text-white"
+                      }`}
                       aria-label="Ajouter aux favoris"
                     >
                       <FiHeart className="text-xl" />

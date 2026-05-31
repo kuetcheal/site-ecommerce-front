@@ -6,6 +6,7 @@ import Home from "./pages/home.jsx";
 import Produit from "./pages/produit.jsx";
 import ProductDetail from "./pages/productDetail.jsx";
 import Panier from "./pages/panier.jsx";
+import Favoris from "./pages/favoris.jsx"
 import Contact from "./pages/contact.jsx";
 import Nouveautes from "./pages/nouveautes.jsx";
 import Promotions from "./pages/promotions.jsx";
@@ -30,10 +31,11 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="*" element={<Error404 />} />
-              
+
               <Route path="/produits" element={<Produit />} />
               <Route path="/produits/:id" element={<ProductDetail />} />
               <Route path="/panier" element={<Panier />} />
+              <Route path="/favoris" element={<Favoris />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/nouveautes" element={<Nouveautes />} />
               <Route path="/promotions" element={<Promotions />} />

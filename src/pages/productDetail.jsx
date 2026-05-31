@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
+
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../store/favoritesSlice.js";
+
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -10,6 +14,7 @@ import {
   FiTruck,
   FiRefreshCcw,
 } from "react-icons/fi";
+
 import { FaFacebookF, FaPinterestP, FaWhatsapp } from "react-icons/fa";
 
 import { shopProducts } from "../data/shopProductsData";
@@ -25,6 +30,10 @@ const ProductDetail = () => {
   const { id } = useParams();
 
   const { addToCart } = useCart();
+
+  const dispatch = useDispatch();
+
+  const favorites = useSelector((state) => state.favorites.items);
 
   const product = useMemo(() => {
     return shopProducts.find((item) => item.id === Number(id));
@@ -42,6 +51,10 @@ const ProductDetail = () => {
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  const isFavorite = product
+    ? favorites.some((item) => item.id === product.id)
+    : false;
 
   if (!product) {
     return (
@@ -88,13 +101,13 @@ const ProductDetail = () => {
     setQuantity((prev) => Math.min(product.stock, prev + 1));
   };
 
-const handleAddToCart = () => {
-  addToCart(product, quantity);
-  alert("Produit ajouté au panier");
-};
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    alert("Produit ajouté au panier");
+  };
 
   const handleFavorite = () => {
-    console.log("Ajouter aux favoris avec Redux plus tard :", product);
+    dispatch(toggleFavorite(product));
   };
 
   return (
@@ -123,7 +136,6 @@ const handleAddToCart = () => {
                 className="w-full h-[430px] md:h-[600px] object-cover"
               />
 
-              {/* Flèche gauche au milieu de la grande image */}
               {productImages.length > 1 && (
                 <button
                   type="button"
@@ -135,7 +147,6 @@ const handleAddToCart = () => {
                 </button>
               )}
 
-              {/* Flèche droite au milieu de la grande image */}
               {productImages.length > 1 && (
                 <button
                   type="button"
@@ -148,7 +159,6 @@ const handleAddToCart = () => {
               )}
             </div>
 
-            {/* Miniatures sans flèches */}
             {productImages.length > 1 && (
               <div className="mt-5 flex items-center justify-center gap-4">
                 {productImages.map((image, index) => (
@@ -285,10 +295,14 @@ const handleAddToCart = () => {
               <button
                 type="button"
                 onClick={handleFavorite}
-                className="h-12 px-6 rounded-full border border-gray-300 text-gray-900 font-semibold hover:border-pink-500 hover:text-pink-500 transition flex items-center justify-center gap-2"
+                className={`h-12 px-6 rounded-full font-semibold transition flex items-center justify-center gap-2 ${
+                  isFavorite
+                    ? "bg-pink-500 text-white border border-pink-500"
+                    : "border border-gray-300 text-gray-900 hover:border-pink-500 hover:text-pink-500"
+                }`}
               >
                 <FiHeart />
-                Favoris
+                {isFavorite ? "Retirer des favoris" : "Favoris"}
               </button>
             </div>
 
@@ -307,7 +321,9 @@ const handleAddToCart = () => {
                 <FiTruck className="text-2xl text-pink-500" />
                 <div>
                   <p className="font-bold text-gray-900">Livraison rapide</p>
-                  <p className="text-sm text-gray-500">Suivi de commande inclus</p>
+                  <p className="text-sm text-gray-500">
+                    Suivi de commande inclus
+                  </p>
                 </div>
               </div>
 

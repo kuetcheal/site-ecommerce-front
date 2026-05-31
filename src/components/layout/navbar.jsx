@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useCart } from "../../context/CartContext.jsx";
 import {
   FiMenu,
@@ -15,6 +16,8 @@ const Navbar = () => {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   const { cartCount } = useCart();
+
+  const favoritesCount = useSelector((state) => state.favorites.items.length);
 
   const navClass = ({ isActive }) =>
     isActive
@@ -138,6 +141,12 @@ const Navbar = () => {
               aria-label="Voir mes favoris"
             >
               <FiHeart className="text-xl" />
+
+              {favoritesCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {favoritesCount}
+                </span>
+              )}
             </Link>
 
             {/* Panier */}
@@ -307,10 +316,16 @@ const Navbar = () => {
               <Link
                 to="/favoris"
                 onClick={closeMobileMenu}
-                className="py-3 rounded-2xl bg-gray-100 flex flex-col items-center gap-1 text-gray-700 text-sm"
+                className="relative py-3 rounded-2xl bg-gray-100 flex flex-col items-center gap-1 text-gray-700 text-sm"
               >
                 <FiHeart className="text-xl" />
                 Favoris
+
+                {favoritesCount > 0 && (
+                  <span className="absolute top-2 right-5 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {favoritesCount}
+                  </span>
+                )}
               </Link>
 
               <Link
