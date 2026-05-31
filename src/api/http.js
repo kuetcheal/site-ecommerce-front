@@ -1,4 +1,5 @@
-const API_URL_BASE = import.meta.env.VITE_API_URL_BASE || "http://localhost:8081/api";
+const API_URL_BASE =
+  import.meta.env.VITE_API_URL_BASE || "http://localhost:8081/api";
 
 const TOKEN_KEY = "site_ecommerce_token";
 
@@ -14,17 +15,19 @@ export const removeToken = () => {
   localStorage.removeItem(TOKEN_KEY);
 };
 
-const buildHeaders = (isFormData = false) => {
-  const token = getToken();
-
+const buildHeaders = (isFormData = false, withAuth = true) => {
   const headers = {};
 
   if (!isFormData) {
     headers["Content-Type"] = "application/json";
   }
 
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+  if (withAuth) {
+    const token = getToken();
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
   }
 
   return headers;
@@ -58,7 +61,7 @@ export const http = {
   get: async (endpoint) => {
     const response = await fetch(`${API_URL_BASE}${endpoint}`, {
       method: "GET",
-      headers: buildHeaders(),
+      headers: buildHeaders(false, true),
     });
 
     return handleResponse(response);
@@ -67,7 +70,17 @@ export const http = {
   post: async (endpoint, body, isFormData = false) => {
     const response = await fetch(`${API_URL_BASE}${endpoint}`, {
       method: "POST",
-      headers: buildHeaders(isFormData),
+      headers: buildHeaders(isFormData, true),
+      body: isFormData ? body : JSON.stringify(body),
+    });
+
+    return handleResponse(response);
+  },
+
+  postPublic: async (endpoint, body, isFormData = false) => {
+    const response = await fetch(`${API_URL_BASE}${endpoint}`, {
+      method: "POST",
+      headers: buildHeaders(isFormData, false),
       body: isFormData ? body : JSON.stringify(body),
     });
 
@@ -77,7 +90,7 @@ export const http = {
   put: async (endpoint, body, isFormData = false) => {
     const response = await fetch(`${API_URL_BASE}${endpoint}`, {
       method: "PUT",
-      headers: buildHeaders(isFormData),
+      headers: buildHeaders(isFormData, true),
       body: isFormData ? body : JSON.stringify(body),
     });
 
@@ -87,7 +100,7 @@ export const http = {
   delete: async (endpoint) => {
     const response = await fetch(`${API_URL_BASE}${endpoint}`, {
       method: "DELETE",
-      headers: buildHeaders(),
+      headers: buildHeaders(false, true),
     });
 
     if (response.status === 204) {

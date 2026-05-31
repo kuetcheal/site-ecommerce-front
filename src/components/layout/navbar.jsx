@@ -4,7 +4,6 @@ import { useCart } from "../../context/CartContext.jsx";
 import {
   FiMenu,
   FiX,
-  FiSearch,
   FiShoppingBag,
   FiUser,
   FiHeart,
@@ -21,6 +20,11 @@ const Navbar = () => {
     isActive
       ? "text-pink-500 font-semibold"
       : "text-gray-700 hover:text-pink-500 transition";
+
+  const closeMobileMenu = () => {
+    setIsOpen(false);
+    setCategoriesOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm">
@@ -113,7 +117,8 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* Search desktop */}
+          {/* Search desktop désactivée pour le moment */}
+          {/*
           <div className="hidden xl:flex items-center w-72 bg-gray-100 rounded-full px-4 py-2 border border-gray-100 focus-within:border-pink-300 transition">
             <FiSearch className="text-gray-400 mr-2" />
             <input
@@ -122,12 +127,24 @@ const Navbar = () => {
               className="bg-transparent outline-none text-sm w-full text-gray-700 placeholder:text-gray-400"
             />
           </div>
+          */}
 
           {/* Actions desktop */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Favoris */}
+            <Link
+              to="/favoris"
+              className="relative w-10 h-10 rounded-full bg-gray-100 hover:bg-pink-50 flex items-center justify-center text-gray-700 hover:text-pink-500 transition"
+              aria-label="Voir mes favoris"
+            >
+              <FiHeart className="text-xl" />
+            </Link>
+
+            {/* Panier */}
             <Link
               to="/panier"
               className="relative w-10 h-10 rounded-full bg-gray-100 hover:bg-pink-50 flex items-center justify-center text-gray-700 hover:text-pink-500 transition"
+              aria-label="Voir mon panier"
             >
               <FiShoppingBag className="text-xl" />
 
@@ -138,6 +155,7 @@ const Navbar = () => {
               )}
             </Link>
 
+            {/* Connexion */}
             <Link
               to="/connexion"
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 text-white text-sm font-semibold hover:bg-pink-500 transition"
@@ -149,6 +167,7 @@ const Navbar = () => {
 
           {/* Mobile button */}
           <button
+            type="button"
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center text-gray-800"
             aria-label="Ouvrir le menu"
@@ -164,7 +183,8 @@ const Navbar = () => {
         {/* Mobile menu */}
         {isOpen && (
           <div className="lg:hidden pb-6">
-            {/* Search mobile */}
+            {/* Search mobile désactivée pour le moment */}
+            {/*
             <div className="flex items-center bg-gray-100 rounded-2xl px-4 py-3 mb-5">
               <FiSearch className="text-gray-400 mr-2" />
               <input
@@ -173,11 +193,12 @@ const Navbar = () => {
                 className="bg-transparent outline-none text-sm w-full text-gray-700"
               />
             </div>
+            */}
 
             <div className="flex flex-col gap-2">
               <NavLink
                 to="/"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Accueil
@@ -185,7 +206,7 @@ const Navbar = () => {
 
               <NavLink
                 to="/produits"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Produits
@@ -193,7 +214,7 @@ const Navbar = () => {
 
               <NavLink
                 to="/nouveautes"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Nouveautés
@@ -206,8 +227,9 @@ const Navbar = () => {
               >
                 Catégories
                 <FiChevronDown
-                  className={`transition ${categoriesOpen ? "rotate-180" : ""
-                    }`}
+                  className={`transition ${
+                    categoriesOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
@@ -215,7 +237,7 @@ const Navbar = () => {
                 <div className="ml-4 border-l border-gray-100 pl-3 flex flex-col gap-1">
                   <NavLink
                     to="/homme"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-pink-50 hover:text-pink-500"
                   >
                     Vêtements homme
@@ -223,7 +245,7 @@ const Navbar = () => {
 
                   <NavLink
                     to="/femme"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-pink-50 hover:text-pink-500"
                   >
                     Vêtements femme
@@ -231,7 +253,7 @@ const Navbar = () => {
 
                   <NavLink
                     to="/chaussures"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-pink-50 hover:text-pink-500"
                   >
                     Chaussures
@@ -239,7 +261,7 @@ const Navbar = () => {
 
                   <NavLink
                     to="/montres"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-pink-50 hover:text-pink-500"
                   >
                     Montres
@@ -247,7 +269,7 @@ const Navbar = () => {
 
                   <NavLink
                     to="/accessoires"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMobileMenu}
                     className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-pink-50 hover:text-pink-500"
                   >
                     Accessoires
@@ -257,7 +279,7 @@ const Navbar = () => {
 
               <NavLink
                 to="/promotions"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Promotions
@@ -265,7 +287,7 @@ const Navbar = () => {
 
               <NavLink
                 to="/contact"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Contact
@@ -273,7 +295,7 @@ const Navbar = () => {
 
               <NavLink
                 to="/connexion"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-500"
               >
                 Connexion
@@ -284,7 +306,7 @@ const Navbar = () => {
             <div className="grid grid-cols-3 gap-3 mt-6">
               <Link
                 to="/favoris"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="py-3 rounded-2xl bg-gray-100 flex flex-col items-center gap-1 text-gray-700 text-sm"
               >
                 <FiHeart className="text-xl" />
@@ -293,16 +315,22 @@ const Navbar = () => {
 
               <Link
                 to="/panier"
-                onClick={() => setIsOpen(false)}
-                className="py-3 rounded-2xl bg-gray-100 flex flex-col items-center gap-1 text-gray-700 text-sm"
+                onClick={closeMobileMenu}
+                className="relative py-3 rounded-2xl bg-gray-100 flex flex-col items-center gap-1 text-gray-700 text-sm"
               >
                 <FiShoppingBag className="text-xl" />
                 Panier
+
+                {cartCount > 0 && (
+                  <span className="absolute top-2 right-5 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
 
               <Link
                 to="/connexion"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMobileMenu}
                 className="py-3 rounded-2xl bg-gray-900 text-white flex flex-col items-center gap-1 text-sm"
               >
                 <FiUser className="text-xl" />
